@@ -1,10 +1,12 @@
 # Elm入門ハンズオン
 
+![](https://cdn-images-1.medium.com/max/300/1*bwSiWbEBA7IyZNyqu2bgBQ.pn://cdn-images-1.medium.com/max/300/1*bwSiWbEBA7IyZNyqu2bgBQ.png)
+
 文法編
 
 ---
 
-# このハンズオンのターゲット
+## このハンズオンのターゲット
 
 - Elmを一切知らない方
     - 始めたばかりで右も左もわからない方
