@@ -131,26 +131,26 @@ False : Bool
 | """
 "\n  hello\n  world\n  " : String
 ```
-@[5-9](REPLで複数行入力するには、\を行末に付けます。)
+@[5-8](REPLで複数行入力するには、\を行末に付けます。)
 
 ---
 
 ## 関数(1)
 
 ```elm
--- function arg1 arg2 = body
 > square n = n^2
-<function> : number -> number -- number型の値を受け取り、number型の値を返す関数。
-square 5
+<function> : number -> number
 > 25
 ```
+@[1](function arg1 arg2,... = body)
+@[2](number型の値を受け取り、number型の値を返す関数。)
 
 ```elm
--- 実際にソースコードに書く場合には、意図せぬ型推論が働くのを防いだり、
--- ドキュメンテーションのために関数の型は明記しましょう。
 square : Int -> Int
 square n = n^2
 ```
+実際にソースコードに書く場合には、意図せぬ型推論が働くのを防いだり、ドキュメンテーションのために関数の型は明記しましょう。
+
 
 ---
 
