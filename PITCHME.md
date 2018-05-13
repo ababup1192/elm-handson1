@@ -295,11 +295,48 @@ True : Bool
 
 +++
 
+## let式
+
+```
+> let a = 10 in a + 5
+15 : number
+> let px x = toString x ++ "px" in (px 10, px 5)
+("10px","5px") : ( String, String )
+```
+@[1-2](let式は、let *変数束縛* in *式*と言うように書きます。スコープを限定し式なのでそのまま評価されます。)
+@[2-3](let式の特徴として、変数束縛時にローカル関数を定義することができます。)
+
+
++++
+
+## let式
+
+```
+> circle r =\
+|     let\
+|         pi =\
+|             3.14\
+| \
+|         circumference =\
+|             2 * pi * r\
+| \
+|         area =\
+|             pi * r ^ 2\
+|     in\
+|         "Circle(circumference = " ++ (toString circumference) ++ ", area = " ++ (toString area) ++ ")"
+<function> : Float -> String
+> circle 3
+"Circle(circumference = 18.84, area = 28.26)" : String
+```
+実際には、let式は関数中でこのように使われます。
+
++++
+
 ## プチ演習: 関数
 
 - Elmドキュメント: [Basicsパッケージ](http://package.elm-lang.org/packages/elm-lang/core/latest/Basics) の関数をいくつか試してみましょう
 - λ抽象で関数を定義してみましょう
-
+- let式を使った関数を定義してみましょう。
 ---
 
 ## 条件式 if
