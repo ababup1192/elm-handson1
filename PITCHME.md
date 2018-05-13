@@ -212,11 +212,22 @@ But the 2nd is:
 
 ## 関数
 
+ここからは、複数行の例が増えてくるため「Handson.elm」に関数を書き、それを読み込むことで試していきます。
+
 ```elm
-square : Int -> Int
-square n = n^2
+module Handson exposing (..)
+
+square : Int -> Int -- ドキュメンテーションのための型シグネチャ
+square n =
+    n ^ 2
 ```
-実際にソースコードに書く場合には、意図せぬ型推論が働くのを防いだり、ドキュメンテーションのために関数の型(シグネチャ)は明記しましょう。
+
+```elm
+> import Handson exposing (..)
+> square 5
+25 : Int
+```
+モジュールから関数をimportして定義を呼び出します。
 
 +++
 
@@ -254,6 +265,23 @@ But it is:
 
     String
 ```
+type aliasは型の別名を付けたに過ぎないため、*type*キーワードを使うことで型を作り出し、より型安全にすることができます。
+
++++
+
+## 関数
+
+```elm
+> type Container a = Container a
+> Container 1
+Container 1 : Repl.Container number
+> Container "abc"
+Container "abc" : Repl.Container String
+> Container (1, "abc")
+Container (1,"abc") : Repl.Container ( number, String )
+```
+
+typeで作り出した型はListのように型変数を持つことが出来ます。
 
 +++
 
@@ -335,7 +363,7 @@ True : Bool
 
 ## 関数
 
-```
+```elm
 -- (/) : Float -> Float -> Float
 > 5 / 2
 2.5 : Float
@@ -352,7 +380,7 @@ True : Bool
 
 ## let式
 
-```
+```elm
 > let a = 10 in a + 5
 15 : number
 > let px x = toString x ++ "px" in (px 10, px 5)
@@ -366,19 +394,20 @@ True : Bool
 
 ## let式
 
-```
-> circle r =\
-|     let\
-|         pi =\
-|             3.14\
-| \
-|         circumference =\
-|             2 * pi * r\
-| \
-|         area =\
-|             pi * r ^ 2\
-|     in\
-|         "Circle(circumference = " ++ (toString circumference) ++ ", area = " ++ (toString area) ++ ")"
+```elm
+circle r =
+    let
+        pi =
+            3.14
+
+        circumference =
+            2 * pi * r
+
+        area =
+            pi * r ^ 2
+    in
+        "Circle(circumference = " ++ (toString circumference) ++ ", area = " ++ (toString area) ++ ")"
+
 <function> : Float -> String
 > circle 3
 "Circle(circumference = 18.84, area = 28.26)" : String
@@ -548,8 +577,8 @@ JPY : Money
 True : Bool
 ```
 @[1](UnionTypesは、stringやbool, nullをよりも直感的に分岐した型を表すことができます。)
-@[1](Tagged UnionやADT(Abstract Data Type: 抽象データ型)と呼ばれます。)
-@[1](Dollar, EURO, JPY はMoney型を返す関数で値コンストラクタ呼ばれます。)
+@[1](Tagged UnionやADT(Algebraic Data Type: 代数的データ型)と呼ばれます。)
+@[1](Dollar, EURO, JPY はMoney型を返す関数で値コンストラクタと呼ばれます。)
 
 +++
 
