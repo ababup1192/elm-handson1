@@ -305,19 +305,19 @@ else\
 [1] -- 1 :: [] => Node 1 (Empty)
 [1, 2, 3] -- 1 :: 2 :: 3 :: []
 
-> 1 :: 2 :: 3 :: [] -- (::) は演算子で右から評価され、Listの先頭に値を追加します。
+> 1 :: 2 :: 3 :: []
 [1, 2, 3] : List number
 > (::) 1 ((::) 2 (((::) 3 []))) -- Node 1 (Node 2 (Node 3 (Empty)))
 [1,2,3] : List number
 ```
+
+(::) は演算子で右から評価され、Listの先頭に値を追加します。
 
 ---
 
 ## 特殊型 List(2)
 
 ```elm
--- Debug.crashは、例外を発生させる関数です。本来はTODO用途で使いましょう。
--- 実際のList.headなど通常の組み込み関数では実行時例外は起きません。確認してみましょう。
 > myHead list =\
     case list of\
         [] ->\
@@ -328,6 +328,8 @@ else\
 -- a は、
 <function> : List a -> a
 ```
+@[4](Debug.crashは、例外を発生させる関数です。本来はTODO用途で使いましょう。)
+@[1-9](実際のList.headなど通常の組み込み関数では実行時例外は起きません。確認してみましょう。)
 
 ---
 
@@ -356,12 +358,9 @@ The message provided by the code author is:
 
 ---
 
-## 特殊型 Union Types(1)
+## 特殊型 Union Types
 
 ```
--- UnionTypesは、stringやbool, nullをよりも直感的に分岐した型を表すことができます。
--- Tagged UnionやADT(Abstract Data Type: 抽象データ型)と呼ばれます。
--- Dollar, EURO, JPY はMoney型を返す関数で値コンストラクタ呼ばれます。
 > type Money = Dollar | EURO | JPY
 > Dollar
 Dollar : Money
@@ -372,15 +371,17 @@ JPY : Money
 > JPY == JPY -- Union Typesは等価性を備えています。
 True : Bool
 ```
+@[1](UnionTypesは、stringやbool, nullをよりも直感的に分岐した型を表すことができます。)
+@[1](Tagged UnionやADT(Abstract Data Type: 抽象データ型)と呼ばれます。)
+@[1](Dollar, EURO, JPY はMoney型を返す関数で値コンストラクタ呼ばれます。)
 
----
++++
 
-## 特殊型 Union Types(2)
+## 特殊型 Union Types
 
 ```
 toJPYRate : Money -> Float
 toJPYRate money =\
--- すべての分岐が無ければコンパイルエラー。つまり網羅性を保証しています。
     case money of\
         Dollar ->\
             109.134\
@@ -391,26 +392,27 @@ toJPYRate money =\
         JPY ->\
             1
 ```
+@[3-11](すべての分岐が無ければコンパイルエラー。つまり網羅性を保証しています。)
 
----
++++
 
-## 特殊型 Union Types(3)
+## 特殊型 Union Types
 
 ```elm
 > type Foo = Bar Int
--- 分岐の無いUnion Typeの場合は関数の引数でパターンマッチできます。括弧を忘れずに!
 > getBarNum (Bar num) = num
 <function> : Repl.Foo -> Int
 > getBarNum (Bar 5)
 5 : Int
 ```
 
----
+分岐の無いUnion Typeの場合は関数の引数でパターンマッチできます。括弧を忘れずに!
 
-## 特殊型 Union Types(4)
++++
+
+## 特殊型 Union Types
 
 ```elm
--- 頻繁に使う値があるか無いかの分岐に使うMaybe型です。
 getNumOrZero : Maybe Int -> Int
 > getNumOrZero mNum =\
     case mNum of\
@@ -423,3 +425,7 @@ getNumOrZero : Maybe Int -> Int
 > getNumOrZero (Just 1)
 1 : number
 ```
+
+頻繁に使う値があるか無いかの分岐に使うMaybe型です。
+
+
