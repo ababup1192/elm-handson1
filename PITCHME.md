@@ -31,14 +31,13 @@
 
 ---
 
-## TODO 目次予定
+## 目次
 
 - 式
-- 型クラス(モドキ)
-- 基礎テクニック
-    - 再帰
-    - 高階関数
-
+- パターンマッチ
+- Union Types
+- 再帰
+- 高階関数
 ---
 
 ## Elmのインストール方法
@@ -50,7 +49,6 @@ $ npm install -g elm
 $ elm -v
 0.18.0
 ```
-
 
 ---
 
@@ -94,12 +92,10 @@ $ elm-repl
 
 - リテラル
 - 関数
-- 条件式
-    - if
-    - case
-- よく使われる型
-- Let式
-
+- let式
+- if式
+- パターンマッチ(case式)
+- Union Types
 ---
 
 ## リテラル
@@ -177,6 +173,25 @@ But the 2nd is:
 @[3-10](複雑なタプルの例)
 @[11-12](空のタプルは**Unit**とも言われ、何もない型を表すときに使われます。)
 
++++
+
+## リテラル
+
+```elm
+> record = {x = 1, y = 2, z = 3}
+{ x = 1, y = 2, z = 3 } : { x : number, y : number1, z : number2 }
+> record.x
+1 : number
+> .y record
+2 : number
+> { record | x = 10, z = record.y + 20 }
+{ x = 10, y = 2, z = 22 } : { y : number1, x : number, z : number1 }
+```
+@[1-2](レコードはkeyとvalueからなるセットです。JavaScriptのオブジェクトに似ています。)
+@[3-4](JavaScriptのオブジェクトのように、*record*.x のようにアクセスできます。)
+@[5-6](また、*.field*のような関数がレコードに対して生成されます。)
+@[7-8]({ レコード変数 | 変数束縛 } の形でレコードの値を変更した、新しいレコードを生成します。)
+
 ---
 
 ## 関数
@@ -193,11 +208,32 @@ But the 2nd is:
 @[3-4](本体が評価されることで、25となります)
 @[1-4](関数定義と評価)
 
++++
+
+## 関数
+
 ```elm
 square : Int -> Int
 square n = n^2
 ```
-@[5-6](実際にソースコードに書く場合には、意図せぬ型推論が働くのを防いだり、ドキュメンテーションのために関数の型は明記しましょう。)
+実際にソースコードに書く場合には、意図せぬ型推論が働くのを防いだり、ドキュメンテーションのために関数の型(シグネチャ)は明記しましょう。
+
++++
+
+## 関数
+
+```elm
+> type alias Name = String
+> type alias Age = Int
+> type alias User = { name: Name, age: Age }
+-- getName : User -> Name
+> getName user = user.name
+<function> : { b | name : a } -> a
+getName (User "john" 15)
+"john" : Repl.Name
+```
+@[1-3](より可読性の高いコードを書くためには、*type alias*で型の別名を付けることもできます。Elmでは型の設計をおこなってから実装を考える型駆動開発の考え方も有効です。)
+@[3,7](レコード型のtype aliasは少し特殊な事情があります。(レコードalias フィールドの値, フィールド値, ...) のように本来の書き方をショートカットできます。)
 
 
 +++
@@ -233,7 +269,7 @@ square n = n^2
 
 @[1-2](このように関数から名前を取り除き、)
 @[1-2](\変数 -> 本体の式)
-@[1-2](このカタチをλ抽象(ラムダ抽象, ラムダ式、ラムダ関数、匿名関数)と呼びます。)
+@[1-2](このカタチを匿名関数(ラムダ式、ラムダ関数、ラムダ抽象)と呼びます。)
 @[3](λ抽象自体も式なので名前を付けられます。)
 @[1-3]( 後述しますが、式なので別の関数や式に渡すことも、関数の結果としてλ抽象を返すこともできます。
 @[1-3](このような特徴を持った言語の関数を「第一級関数」(ファーストクラスファンクション)と呼びます。)
@@ -339,7 +375,7 @@ True : Bool
 - let式を使った関数を定義してみましょう。
 ---
 
-## 条件式 if
+## if式
 
 ```elm
 > powerLevel = 10000
@@ -354,7 +390,7 @@ True : Bool
 
 +++
 
-## 条件式 if
+## if式
 
 ```elm
 > key = 40
@@ -374,13 +410,179 @@ else\
 
 +++
 
-## プチ演習: 条件式
+## プチ演習: if式
 
 - if同士の演算(if式同士の足し算など)を試してみましょう。
 
 ---
 
-## 特殊型 List
+## パターンマッチ
+
+```elm
+fib n =\
+    case n of\
+        0 ->\
+            1\
+\
+        1 ->\
+            1\
+\
+        _ ->\
+            fib (n - 1) + fib (n - 2)
+> fib 10
+89 : number
+```
+*case* 対象 *of*、 パターン -> のように書くことで、様々なパターンをマッチさせることができます。case自体ももちろん式なので値を返します。本質は分岐をおこなうswitch-case分とは大きく異なります(次ページ)。
+
++++
+
+## パターンマッチ
+
+```elm
+> tuple = (8, 4)
+(8, 4) : ( number, number1 )
+> case tuple of\
+|     ( x, y ) ->\
+|         x + y
+12 : numbner
+
+record = { x = 7, y = 8 }
+> case record of\
+|     { x, y } ->\
+|         x + y
+15 : number
+```
+パターンマッチの本質はデータ構造の分解です。データ構造が構造通り直感的に取り出せていることがわかります。
+
++++
+
+## パターンマッチ
+
+```elm
+> plusPair (x, y) = x + y
+<function> : ( number, number ) -> number
+> plusPair (4, 4)
+8 : number
+> (\(x, y) -> x + y) (4, 4)
+8 : number
+> let {x, y} = { x = 4, y = 4 } in x + y
+8 : number
+> let ({x, y, z} as record) = { x = 1, y = 2, z = 3 } in { record | y = x * y, z = x + z }
+{ x = 1, y = 2, z = 4 } : { x : number2, y : number, z : number1 }
+```
+@[1-8](分岐の存在しないデータ構造に関しては、関数・無名関数・let式等でパターンマッチして取り出すことができます。)
+@[9-10](パターンマッチの際に分解前のデータ構造そのものを扱いたいときには、**as**キーワードを使い変数に束縛します。もちろんlet式以外でも使えます。)
+
++++
+
+## パターンマッチ
+
+```elm
+-- getNumOrZero : Maybe Int -> Int
+> getNumOrZero mNum =\
+    case mNum of\
+        Just n ->\
+            n\
+\
+        Nothing ->\
+            0
+> let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 10)
+10 : number
+> let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 3)
+0 : number
+> 
+```
+
+頻繁に使う値があるか無いかの分岐に使うMaybe型です。
+
++++
+
+## パターンマッチ
+
+```elm
+> safeSqrt n =\
+    if n >= 0 then\
+        Ok n\
+    else\
+        Err "n must be a positive number."
+> safeSqrt 1
+Ok 1 : Result.Result String number
+> safeSqrt -1
+Err "n must be a positive number." : Result.Result String number
+```
+
+Maybeと似た型ですが、失敗したときの理由を任意の型で受け取ることができます。
+
+---
+
+## Union Types
+
+```
+> type Money = Dollar | EURO | JPY
+> Dollar
+Dollar : Money
+> EURO
+EURO : Money
+> JPY
+JPY : Money
+> JPY == JPY -- Union Typesは等価性を備えています。
+True : Bool
+```
+@[1](UnionTypesは、stringやbool, nullをよりも直感的に分岐した型を表すことができます。)
+@[1](Tagged UnionやADT(Abstract Data Type: 抽象データ型)と呼ばれます。)
+@[1](Dollar, EURO, JPY はMoney型を返す関数で値コンストラクタ呼ばれます。)
+
++++
+
+## Union Types
+
+```
+toJPYRate : Money -> Float
+toJPYRate money =\
+    case money of\
+        Dollar ->\
+            109.134\
+\
+        EURO ->\
+            129.462\
+\
+        JPY ->\
+            1
+```
+@[3-11](すべての分岐が無ければコンパイルエラー。つまり網羅性を保証しています。)
+
++++
+
+## Union Types
+
+```elm
+> type Foo = Bar Int
+> getBarNum (Bar num) = num
+<function> : Repl.Foo -> Int
+> getBarNum (Bar 5)
+5 : Int
+```
+
+分岐の無いUnion Typeの場合は関数の引数でパターンマッチできます。括弧を忘れずに!
+
+---
+
+## 再帰
+
+
+
+---
+
+## List
+
+```elm
+data List a = Empty | Node a (List a)
+```
+Listは以上のようなUnion Typesと見なすことができます。
+
++++
+
+## List
 
 ```elm
 [] -- Empty
@@ -397,7 +599,7 @@ else\
 
 +++
 
-## 特殊型 List
+## List
 
 ```elm
 > myHead list =\
@@ -415,7 +617,7 @@ else\
 
 +++
 
-## 特殊型 List
+## List
 
 ```elm
 > myHead [1, 2, 3]
@@ -439,77 +641,4 @@ The message provided by the code author is:
 - [Listパッケージ](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List)の関数を試してみましょう。
 - List.isEmpty, List.tail をパターンマッチを利用して自分で定義してみましょう。
     - myIsEmpty, myTailという名前で定義してみましょう。
-
----
-
-## 特殊型 Union Types
-
-```
-> type Money = Dollar | EURO | JPY
-> Dollar
-Dollar : Money
-> EURO
-EURO : Money
-> JPY
-JPY : Money
-> JPY == JPY -- Union Typesは等価性を備えています。
-True : Bool
-```
-@[1](UnionTypesは、stringやbool, nullをよりも直感的に分岐した型を表すことができます。)
-@[1](Tagged UnionやADT(Abstract Data Type: 抽象データ型)と呼ばれます。)
-@[1](Dollar, EURO, JPY はMoney型を返す関数で値コンストラクタ呼ばれます。)
-
-+++
-
-## 特殊型 Union Types
-
-```
-toJPYRate : Money -> Float
-toJPYRate money =\
-    case money of\
-        Dollar ->\
-            109.134\
-\
-        EURO ->\
-            129.462\
-\
-        JPY ->\
-            1
-```
-@[3-11](すべての分岐が無ければコンパイルエラー。つまり網羅性を保証しています。)
-
-+++
-
-## 特殊型 Union Types
-
-```elm
-> type Foo = Bar Int
-> getBarNum (Bar num) = num
-<function> : Repl.Foo -> Int
-> getBarNum (Bar 5)
-5 : Int
-```
-
-分岐の無いUnion Typeの場合は関数の引数でパターンマッチできます。括弧を忘れずに!
-
-+++
-
-## 特殊型 Union Types
-
-```elm
--- getNumOrZero : Maybe Int -> Int
-> getNumOrZero mNum =\
-    case mNum of\
-        Just n ->\
-            n\
-\
-        Nothing ->\
-            0
-
-> getNumOrZero (Just 1)
-1 : number
-```
-
-頻繁に使う値があるか無いかの分岐に使うMaybe型です。
-
 
