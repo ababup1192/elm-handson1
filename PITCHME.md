@@ -641,21 +641,40 @@ True : Bool
 ## 再帰
 
 ```elm
-> myHead list =
+myHead : List a -> a 
+myHead list =
     case list of
         [] ->
             Debug.crash "No such Element"
 
-        x :: xs ->
+        x :: xs -> -- xsは使用しないため _ で置き換えて良い。
             x
--- a は、
-<function> : List a -> a
+
+> myHead [1, 2, 3]
+1 : Number
+> myHead []
+-- crash
 ```
-@[4](Debug.crashは、例外を発生させる関数です。本来はTODO用途で使いましょう。)
-@[1-9](実際のList.headなど通常の組み込み関数では実行時例外は起きません。確認してみましょう。)
+@[4-5,7-8](リストを順に処理したい場合には、このパターンに分岐されます。)
+@[8-8](xsは先のページから、List a 型になることは分かります。このxsは使われていないため、再帰はしていないケースになります。)
+@[5,12](Debug.crashは、例外を発生させる関数です。本来はTODO用途で使いましょう。)
+@[1-13](実際のList.headなど通常の組み込み関数では実行時例外は起きません。確認してみましょう。)
 ```
 
 ---
+
+```elm
+sum : List Int -> Int
+sum list =
+    case list of
+        [] ->
+            0
+
+        x :: xs ->
+            x + sum xs
+```
+@[7-8](パターンマッチは先ほどの例と変わり有りません。代わりに残りのリストが再帰的に呼ばれています。)
+@[1-8]([)
 
 ## 高階関数
 
