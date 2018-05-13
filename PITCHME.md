@@ -132,6 +132,45 @@ False : Bool
 ```
 @[5-8](REPLで複数行入力するには、\を行末に付けます。)
 
++++
+
+## リテラル
+
+```elm
+> [1, 2, 3, 4, 5]
+[1,2,3,4,5] : List number
+> [1, "a"]
+      ^^^
+The 1st entry has this type:
+    number
+But the 2nd is:
+    String
+> []
+[] : List a
+```
+@[1-2](Listを表すリテラルです。リストはある型の要素が0個以上の集まってできる型です。)
+@[3-8](リストに入る型は任意ですが、リスト全体で単一の型で無ければなりません。)
+@[9-10](REPL上では空のリストを作った場合に、どのような型かを予測することはできません。)
+@[9-10](Elmでは任意の型を表すとき、予約語を除いた小文字から始まる**型変数**を利用します。)
+@[9-10](他の言語で言う、ジェネリクスにおける型パラメータなどと同じ意味を持ちます。)
+
++++
+
+## リテラル
+
+```elm
+> ()
+() : ()
+> (1, 2)
+(1,2) : ( number, number1 )
+> (1, 2, 3, 4, 5)
+(1,2,3,4,5) : ( number, number1, number2, number3, number4 )
+> ("a", "b", "c", "d", "e")
+("a","b","c","d","e") : ( String, String, String, String, String )
+> ("a", 1, "c", [1, 2, 3])
+("a",1,"c",[1,2,3]) : ( String, number, String, List number1 )
+```
+
 ---
 
 ## 関数
@@ -285,7 +324,7 @@ else if key == 38 then\
 \
 else\
     n
-11 : number_
+11 : number
 ```
 
 @[3-10](else節にif式をネストすることも可能。大きくスペースを取るインデントも見やすい。)
@@ -294,7 +333,7 @@ else\
 
 ## プチ演習: 条件式
 
-- if同士の演算を試してみましょう。
+- if同士の演算(if式同士の足し算など)を試してみましょう。
 
 ---
 
@@ -355,7 +394,8 @@ The message provided by the code author is:
 ## プチ演習: List
 
 - [Listパッケージ](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List)の関数を試してみましょう。
-- List.isEmpty, List.tail 関数をパターンマッチを利用して myIsEmpty, myTailを定義してみましょう。
+- List.isEmpty, List.tail をパターンマッチを利用して自分で定義してみましょう。
+    - myIsEmpty, myTailという名前で定義してみましょう。
 
 ---
 
@@ -414,7 +454,7 @@ toJPYRate money =\
 ## 特殊型 Union Types
 
 ```elm
-getNumOrZero : Maybe Int -> Int
+-- getNumOrZero : Maybe Int -> Int
 > getNumOrZero mNum =\
     case mNum of\
         Just n ->\
