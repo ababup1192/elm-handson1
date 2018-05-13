@@ -235,6 +235,25 @@ getName (User "john" 15)
 @[1-3](より可読性の高いコードを書くためには、*type alias*で型の別名を付けることもできます。Elmでは型の設計をおこなってから実装を考える型駆動開発の考え方も有効です。)
 @[3,7](レコード型のtype aliasは少し特殊な事情があります。(レコードalias フィールドの値, フィールド値, ...) のように本来の書き方をショートカットできます。)
 
++++
+
+## 関数
+
+```elm
+> type Name = Name String
+> type Age = Age Int
+> type alias User = { name: Name, age: Age }
+> User (Name "john") (Age 15)
+{ name = Name "john", age = Age 15 } : Repl.User
+> User "john"
+Function `User` is expecting the 1st argument to be:
+
+    Name
+
+But it is:
+
+    String
+```
 
 +++
 
