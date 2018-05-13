@@ -298,7 +298,7 @@ else\
 
 ---
 
-## 特殊型 List(1)
+## 特殊型 List
 
 ```elm
 [] -- Empty
@@ -313,9 +313,9 @@ else\
 
 (::) は演算子で右から評価され、Listの先頭に値を追加します。
 
----
++++
 
-## 特殊型 List(2)
+## 特殊型 List
 
 ```elm
 > myHead list =\
@@ -331,9 +331,9 @@ else\
 @[4](Debug.crashは、例外を発生させる関数です。本来はTODO用途で使いましょう。)
 @[1-9](実際のList.headなど通常の組み込み関数では実行時例外は起きません。確認してみましょう。)
 
----
++++
 
-## 特殊型 List(3)
+## 特殊型 List
 
 ```elm
 > myHead [1, 2, 3]
@@ -349,7 +349,8 @@ The message provided by the code author is:
 
     No such Element
 ```
----
+
++++
 
 ## プチ演習: List
 
