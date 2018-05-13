@@ -683,76 +683,8 @@ sum list =
 ```
 @[7-8](パターンマッチは先ほどの例と変わり有りません。代わりに残りのリストxsが再帰的に呼ばれています。)
 @[4-5,10-11]([]のときは、当然0が返ります。)
-@[7-8, 12-13](1 ;; [] にマッチして 1 + 0 = 1 となります。)
+@[7-8, 12-13](1 :: [] にマッチして 1 + 0 = 1 となります。)
 @[7-8,14-15](順に計算すると、　1 + (2 + (3 + 0)) = 6 となります。)
-
----
-
-## 高階関数
-
-
----
-
-## List
-
-```elm
-type List a = Empty | Node a (List a)
-```
-Listは以上のようなUnion Typesと見なすことができます。
-
-+++
-
-## List
-
-```elm
-[] -- Empty
-[1] -- 1 :: [] => Node 1 (Empty)
-[1, 2, 3] -- 1 :: 2 :: 3 :: []
-
-> 1 :: 2 :: 3 :: []
-[1, 2, 3] : List number
-> (::) 1 ((::) 2 (((::) 3 []))) -- Node 1 (Node 2 (Node 3 (Empty)))
-[1,2,3] : List number
-```
-
-(::) は演算子で右から評価され、Listの先頭に値を追加します。
-
-+++
-
-## List
-
-```elm
-> myHead list =
-    case list of
-        [] ->
-            Debug.crash "No such Element"
-
-        x :: xs ->
-            x
--- a は、
-<function> : List a -> a
-```
-@[4](Debug.crashは、例外を発生させる関数です。本来はTODO用途で使いましょう。)
-@[1-9](実際のList.headなど通常の組み込み関数では実行時例外は起きません。確認してみましょう。)
-
-+++
-
-## List
-
-```elm
-> myHead [1, 2, 3]
-1 : number
-> myHead [1]
-1 : number
-> myHead (1 :: [])
-1 : number
-> myHead []
-Error: Ran into a `Debug.crash` in module `Repl`
-...
-The message provided by the code author is:
-
-    No such Element
-```
 
 +++
 
@@ -761,4 +693,12 @@ The message provided by the code author is:
 - [Listパッケージ](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List)の関数を試してみましょう。
 - List.isEmpty, List.tail をパターンマッチを利用して自分で定義してみましょう。
     - myIsEmpty, myTailという名前で定義してみましょう。
+- Listの積を求めてみましょう。
+
+---
+
+## 高階関数
+
+
+
 
