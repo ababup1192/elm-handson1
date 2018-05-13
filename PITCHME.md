@@ -576,7 +576,7 @@ toJPYRate money =\
 ## List
 
 ```elm
-data List a = Empty | Node a (List a)
+type List a = Empty | Node a (List a)
 ```
 Listは以上のようなUnion Typesと見なすことができます。
 
