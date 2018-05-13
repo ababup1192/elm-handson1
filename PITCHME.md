@@ -441,17 +441,16 @@ circle r =
 ## if式
 
 ```elm
-> key = 40
-> n = 10
-> if key == 40 then\
-    n + 1\
-\
-else if key == 38 then\
-    n - 1\
-\
-else\
-    n
-11 : number
+pushKey key n =
+    if key == 40 then
+        n + 1
+    else if key == 38 then
+        n - 1
+    else
+        n
+
+> pushKey 40 5
+6 : number
 ```
 
 @[3-10](else節にif式をネストすることも可能。大きくスペースを取るインデントも見やすい。)
@@ -467,20 +466,21 @@ else\
 ## パターンマッチ
 
 ```elm
-fib n =\
-    case n of\
-        0 ->\
-            1\
-\
-        1 ->\
-            1\
-\
-        _ ->\
+fib n =
+    case n of
+        0 ->
+            1
+
+        1 ->
+            1
+
+        _ ->
             fib (n - 1) + fib (n - 2)
+
 > fib 10
 89 : number
 ```
-*case* 対象 *of*、 パターン -> のように書くことで、様々なパターンをマッチさせることができます。case自体ももちろん式なので値を返します。本質は分岐をおこなうswitch-case分とは大きく異なります(次ページ)。
+パターンマッチの本質は分岐をおこなうswitch-case文とは大きく異なります(次ページ)。
 
 +++
 
@@ -489,7 +489,7 @@ fib n =\
 ```elm
 > tuple = (8, 4)
 (8, 4) : ( number, number1 )
-> case tuple of\
+> case tuple of
 |     ( x, y ) ->\
 |         x + y
 12 : numbner
@@ -527,13 +527,14 @@ record = { x = 7, y = 8 }
 
 ```elm
 -- getNumOrZero : Maybe Int -> Int
-> getNumOrZero mNum =\
-    case mNum of\
-        Just n ->\
-            n\
-\
-        Nothing ->\
+> getNumOrZero mNum =
+    case mNum of
+        Just n ->
+            n
+
+        Nothing ->
             0
+
 > let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 10)
 10 : number
 > let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 3)
@@ -548,11 +549,12 @@ record = { x = 7, y = 8 }
 ## パターンマッチ
 
 ```elm
-> safeSqrt n =\
-    if n >= 0 then\
-        Ok n\
-    else\
+> safeSqrt n =
+    if n >= 0 then
+        Ok n
+    else
         Err "n must be a positive number."
+
 > safeSqrt 1
 Ok 1 : Result.Result String number
 > safeSqrt -1
@@ -586,15 +588,15 @@ True : Bool
 
 ```
 toJPYRate : Money -> Float
-toJPYRate money =\
-    case money of\
-        Dollar ->\
-            109.134\
-\
-        EURO ->\
-            129.462\
-\
-        JPY ->\
+toJPYRate money =
+    case money of
+        Dollar ->
+            109.134
+
+        EURO ->
+            129.462
+
+        JPY ->
             1
 ```
 @[3-11](すべての分岐が無ければコンパイルエラー。つまり網羅性を保証しています。)
@@ -650,12 +652,12 @@ Listは以上のようなUnion Typesと見なすことができます。
 ## List
 
 ```elm
-> myHead list =\
-    case list of\
-        [] ->\
-            Debug.crash "No such Element"\
-\
-        x :: xs ->\
+> myHead list =
+    case list of
+        [] ->
+            Debug.crash "No such Element"
+
+        x :: xs ->
             x
 -- a は、
 <function> : List a -> a
