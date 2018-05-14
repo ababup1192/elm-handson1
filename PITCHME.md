@@ -236,10 +236,10 @@ john =
 
 ## 関数
 
-ここからは、複数行の例が増えてくるため「Handson.elm」に関数を書き、それを読み込むことで試していきます。
+複数行のプログラムは「Handson.elm」に関数を書き、それを読み込みましょう。
 
 ```elm
-module Handson exposing (..)
+module Handson exposing (..) -- モジュールと言う単位で関数を公開します。
 
 square : Int -> Int -- ドキュメンテーションのための型シグネチャ
 square n =
@@ -247,7 +247,7 @@ square n =
 ```
 
 ```elm
-> import Handson exposing (..)
+> import Handson exposing (..) -- REPLでモジュールをimport
 > square 5
 25 : Int
 ```
