@@ -97,7 +97,7 @@ $ elm-repl
 - Union Types
 ---
 
-## リテラル
+## リテラル: Bool, number
 
 ```elm
 > True
@@ -112,7 +112,7 @@ False : Bool
 
 +++
 
-## リテラル
+## リテラル: Char, String
 
 ```elm
 > 'a'
@@ -129,7 +129,7 @@ False : Bool
 
 +++
 
-## リテラル
+## リテラル: List
 
 ```elm
 > [1, 2, 3, 4, 5]
@@ -151,7 +151,7 @@ But the 2nd is:
 
 +++
 
-## リテラル
+## リテラル: タプル
 
 ```elm
 > (1, 2, 3, 4, 5)
@@ -174,7 +174,7 @@ But the 2nd is:
 
 +++
 
-## リテラル
+## リテラル: レコード
 
 ```elm
 > record = {x = 1, y = 2, z = 3}
@@ -190,6 +190,25 @@ But the 2nd is:
 @[3-4](JavaScriptのオブジェクトのように、*record*.x のようにアクセスできます。)
 @[5-6](また、*.field*のような関数がレコードに対して生成されます。)
 @[7-8]({ レコード変数 | 変数束縛 } の形でレコードの値を変更した、新しいレコードを生成します。)
+
+## リテラル: プチ演習
+
+- ```name = { firstName = "Donald", lastName = "Trump" }``` レコードからフルネーム(スペース区切りの名前)を生成してみましょう。
+
+- johnの型を考えてみましょう。
+- johnのageを17にeyesightを(0.6, 0.7)にしてみましょう。
+
+```elm
+john =
+    { name = "John"
+    , age = 15
+    , eyesight = ( 0.7, 0.8 )
+    , family =
+        [ { name = "Mary", age = 20, eyesight = ( 1.0, 1.0 ) }
+        , { name = "Mike", age = 23, eyesight = ( 0.5, 0.5 ) }
+        ]
+    }
+```
 
 ---
 
