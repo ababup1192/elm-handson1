@@ -251,7 +251,6 @@ square n =
 > square 5
 25 : Int
 ```
-モジュールから関数をimportして定義を呼び出します。
 
 +++
 
@@ -267,7 +266,7 @@ square n =
 getName (User "john" 15)
 "john" : Repl.Name
 ```
-@[1-3](より可読性の高いコードを書くためには、*type alias*で型の別名を付けることもできます。Elmでは型の設計をおこなってから実装を考える型駆動開発の考え方も有効です。)
+@[1-3](可読性の高いコードを書くためには、*type alias*で型の別名を付けることもできます。Elmでは型の設計をおこなってから実装を考える型駆動開発の考え方も有効です。)
 @[3,7](レコード型のtype aliasは少し特殊な事情があります。(レコードalias フィールドの値, フィールド値, ...) のように本来の書き方をショートカットできます。)
 
 +++
@@ -289,7 +288,7 @@ But it is:
 
     String
 ```
-type aliasは型の別名を付けたに過ぎないため、*type*キーワードを使うことで型を作り出し、より型安全にすることができます。
+type aliasは型の別名を付けたに過ぎないため、*type*キーワードを使うことで型を作り出し、可読性を高くしつつ、さらに型安全にすることができます。
 
 +++
 
@@ -402,6 +401,13 @@ True : Bool
 
 +++
 
+## プチ演習: 関数
+
+- Elmドキュメント: [Basicsパッケージ](http://package.elm-lang.org/packages/elm-lang/core/latest/Basics) の関数をいくつか試してみましょう
+- λ抽象で関数を定義してみましょう
+
++++
+
 ## let式
 
 ```elm
@@ -440,11 +446,11 @@ circle r =
 
 +++
 
-## プチ演習: 関数
+## プチ演習: let式
 
-- Elmドキュメント: [Basicsパッケージ](http://package.elm-lang.org/packages/elm-lang/core/latest/Basics) の関数をいくつか試してみましょう
-- λ抽象で関数を定義してみましょう
-- let式を使った関数を定義してみましょう。
+- let式同士の演算をしてみましょう
+- let式を用いた関数を定義してみましょう
+
 ---
 
 ## if式
@@ -477,7 +483,7 @@ pushKey key n =
 6 : number
 ```
 
-@[3-10](else節にif式をネストすることも可能。大きくスペースを取るインデントも見やすい。)
+@[4-10](else節にif式をネストすることも可能。大きくスペースを取るインデントも見やすい。)
 
 +++
 
@@ -547,45 +553,10 @@ record = { x = 7, y = 8 }
 
 +++
 
-## パターンマッチ
+## プチ演習: パターンマッチ
 
-```elm
--- getNumOrZero : Maybe Int -> Int
-> getNumOrZero mNum =
-    case mNum of
-        Just n ->
-            n
-
-        Nothing ->
-            0
-
-> let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 10)
-10 : number
-> let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 3)
-0 : number
-> 
-```
-
-頻繁に使う値があるか無いかの分岐に使うMaybe型です。
-
-+++
-
-## パターンマッチ
-
-```elm
-> safeSqrt n =
-    if n >= 0 then
-        Ok n
-    else
-        Err "n must be a positive number."
-
-> safeSqrt 1
-Ok 1 : Result.Result String number
-> safeSqrt -1
-Err "n must be a positive number." : Result.Result String number
-```
-
-Maybeと似た型ですが、失敗したときの理由を任意の型で受け取ることができます。
+- ```name = { firstName = "Donald", lastName = "Trump" }``` レコードからフルネーム(スペース区切りの名前)を生成してみましょう。
+- ```{ x = 10, y = ( 1, 5 ) }``` レコードとタプルの数字の合計(16)を一つのlet式で表してみましょう。
 
 ---
 
@@ -636,8 +607,66 @@ toJPYRate money =
 > getBarNum (Bar 5)
 5 : Int
 ```
-
 分岐の無いUnion Typeの場合は関数の引数でパターンマッチできます。括弧を忘れずに!
+
++++
+
+## Union Types
+
+値があるか無いかの分岐に使う[Maybe](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Maybe)型です。
+
+```elm
+type Maybe a  -- Container a のように型変数を持ちます。
+    = Just a
+    | Nothing
+```
+
++++
+
+## パターンマッチ
+
+```elm
+-- getNumOrZero : Maybe Int -> Int
+> getNumOrZero mNum =
+    case mNum of
+        Just n ->
+            n
+
+        Nothing ->
+            0
+
+> let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 10)
+10 : number
+> let f x = if x > 5 then Just x else Nothing in getNumOrZero(f 3)
+0 : number
+> 
+```
+
++++
+
+## パターンマッチ
+
+[Result](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Result)型は、Maybeと似た型ですが、失敗したときの理由を任意の型で受け取ることができます。
+
+```elm
+> safeSqrt n =
+    if n >= 0 then
+        Ok n
+    else
+        Err "n must be a positive number."
+
+> safeSqrt 1
+Ok 1 : Result.Result String number
+> safeSqrt -1
+Err "n must be a positive number." : Result.Result String number
+```
+
++++
+
+## プチ演習: Union Types
+
+- Union Typesを用いて自分の型を定義してみましょう。
+- 定義した型に対して関数を実装してみましょう。
 
 ---
 
@@ -712,12 +741,13 @@ sum list =
 
 +++
 
-## プチ演習: List
+## プチ演習: 再帰
 
 - [Listパッケージ](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List)の関数を試してみましょう。
 - List.isEmpty, List.tail をパターンマッチを利用して自分で定義してみましょう。
     - myIsEmpty, myTailという名前で定義してみましょう。
 - Listの積を求めてみましょう。
+- List Int のすべての要素を2倍したList Intを返す関数を書いてみましょう。
 
 ---
 
